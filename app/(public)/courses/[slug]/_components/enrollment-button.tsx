@@ -5,6 +5,7 @@ import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 
+import { toast } from "sonner";
 import { enrollInCourseAction } from "../actions";
 
 interface EnrollmentButtonProps {
@@ -16,7 +17,11 @@ export const EnrollmentButton = ({ courseId }: EnrollmentButtonProps) => {
 
   const onSubmit = () => {
     startTransition(async () => {
-      await enrollInCourseAction(courseId);
+      const result = await enrollInCourseAction(courseId);
+      toast.success(result.message);
+      setTimeout(() => {
+        window.location.href = `/courses/${result.slug}`;
+      }, 1500);
     });
   };
 

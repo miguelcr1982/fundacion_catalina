@@ -2,8 +2,6 @@
 
 import { requireUser } from "@/app/data/user/require-user";
 import { prisma } from "@/lib/db";
-import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 export async function enrollInCourseAction(courseId: string) {
   const user = await requireUser();
@@ -23,8 +21,11 @@ export async function enrollInCourseAction(courseId: string) {
     },
   });
 
+  let message = "";
+
   if (existing?.status === "Active") {
-    redirect(`/courses/${course.slug}`);
+    message = "Ya estás inscrito en este curso";
+    //redirect(`/courses/${course.slug}`);
   }
 
   if (existing) {
@@ -33,7 +34,7 @@ export async function enrollInCourseAction(courseId: string) {
       data: { status: "Active", updatedAt: new Date() },
     });
 
-    toast.success("Se ha actualizado su inscripción en el curso");
+    message = "Se ha actualizado su inscripción en el curso";
   } else {
     await prisma.enrollment.create({
       data: {
@@ -43,8 +44,10 @@ export async function enrollInCourseAction(courseId: string) {
       },
     });
 
-    toast.success("Se ha registrado con éxito en el curso");
+    message = "Se ha registrado con éxito en el curso";
   }
 
-  redirect(`/courses/${course.slug}`);
+  return { message, slug: course.slug };
+
+  //redirect(`/courses/${course.slug}`);
 }
