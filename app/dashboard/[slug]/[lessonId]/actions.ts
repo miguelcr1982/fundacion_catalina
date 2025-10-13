@@ -34,12 +34,12 @@ export async function markLessonComplete(
 
     return {
       status: "success",
-      message: "Lesson marked as completed",
+      message: "Lección marcada como completada",
     };
   } catch {
     return {
       status: "error",
-      message: "Failed to mark lesson as completed",
+      message: "No se pudo marcar la lección como completada",
     };
   }
 }

@@ -73,7 +73,7 @@ export const Uploader = ({
 
         if (!uploadResponse.ok) {
           toast.error("No se pudo cargar el archivo");
-          throw new Error("Local upload failed");
+          throw new Error("Error en la carga local");
         }
 
         const { key } = await uploadResponse.json();

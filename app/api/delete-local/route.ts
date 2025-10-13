@@ -8,7 +8,7 @@ export async function DELETE(request: NextRequest) {
 
     if (!key) {
       return NextResponse.json(
-        { message: "File key is missing." },
+        { message: "Falta la clave del archivo." },
         { status: 400 },
       );
     }
@@ -19,7 +19,7 @@ export async function DELETE(request: NextRequest) {
       await fs.access(absolutePath);
     } catch (e) {
       return NextResponse.json(
-        { message: "File already gone." },
+        { message: "El archivo desapareció." },
         { status: 200 },
       );
     }
@@ -27,13 +27,13 @@ export async function DELETE(request: NextRequest) {
     await fs.unlink(absolutePath);
 
     return NextResponse.json(
-      { message: "File deleted successfully." },
+      { message: "Archivo eliminado exitosamente." },
       { status: 200 },
     );
   } catch (error) {
     console.error("Local delete error:", error);
     return NextResponse.json(
-      { message: "Failed to delete file locally." },
+      { message: "No se pudo eliminar el archivo localmente." },
       { status: 500 },
     );
   }

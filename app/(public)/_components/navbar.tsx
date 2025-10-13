@@ -74,7 +74,7 @@ export const Navbar = () => {
                   Login
                 </Link>
                 <Link href="/login" className={buttonVariants()}>
-                  Get Started
+                  Empezar
                 </Link>
               </>
             )}

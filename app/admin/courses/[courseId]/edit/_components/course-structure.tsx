@@ -273,7 +273,7 @@ export const CourseStructure = ({ data }: CourseStructureProps) => {
           },
           error: () => {
             setItems(previousItems);
-            return "Failed to reorder lessons";
+            return "No se pudieron reordenar las lecciones";
           },
         });
       }

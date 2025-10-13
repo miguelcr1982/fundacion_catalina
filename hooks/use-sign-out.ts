@@ -12,11 +12,11 @@ export function useSignOut() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          toast.success("Signed out successfully");
+          toast.success("Cerró sesión correctamente");
           router.push("/login");
         },
         onError: () => {
-          toast.error("Failed to sign out");
+          toast.error("No se pudo cerrar sesión");
         },
       },
     });

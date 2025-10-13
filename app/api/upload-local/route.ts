@@ -31,13 +31,13 @@ export async function POST(request: NextRequest) {
     await fs.writeFile(filePath, buffer);
 
     return NextResponse.json(
-      { message: "File uploaded successfully", key: publicPath },
+      { message: "Archivo cargado exitosamente", key: publicPath },
       { status: 200 },
     );
   } catch (error) {
     console.error("Local upload error:", error);
     return NextResponse.json(
-      { message: "Failed to upload file locally." },
+      { message: "No se pudo cargar el archivo localmente." },
       { status: 500 },
     );
   }
