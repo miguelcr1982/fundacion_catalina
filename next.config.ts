@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
         port: "3000",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "catalina.softnicr.com",
+        port: "",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };
