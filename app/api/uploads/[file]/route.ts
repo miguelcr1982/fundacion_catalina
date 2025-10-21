@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
 
-interface Params {
-  file: string;
-}
+export async function GET(request: Request) {
+  // Extraer el archivo desde la URL usando request.url
+  const url = new URL(request.url);
+  const segments = url.pathname.split("/");
+  const file = segments[segments.length - 1]; // obtiene el [file] dinámico
 
-export async function GET(request: Request, { params }: { params: Params }) {
-  const { file } = params;
   const filePath = path.join(process.cwd(), "public/uploads", file);
 
   if (!fs.existsSync(filePath)) {
