@@ -1,15 +1,18 @@
 import fs from "fs";
-import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { file } = req.query;
-  const filePath = path.join(process.cwd(), "public/uploads", file as string);
+export async function GET(
+  request: Request,
+  { params }: { params: { file: string } },
+) {
+  const { file } = params;
+  const filePath = path.join(process.cwd(), "public/uploads", file);
 
   if (!fs.existsSync(filePath)) {
-    return res.status(404).send("Archivo no encontrado");
+    return new Response("Archivo no encontrado", { status: 404 });
   }
 
+  const fileBuffer = fs.readFileSync(filePath);
   const ext = path.extname(filePath).toLowerCase();
   const mime =
     ext === ".mp4"
@@ -24,7 +27,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
               ? "image/png"
               : "application/octet-stream";
 
-  res.setHeader("Content-Type", mime);
-  res.setHeader("Accept-Ranges", "bytes");
-  fs.createReadStream(filePath).pipe(res);
+  return new Response(fileBuffer, {
+    status: 200,
+    headers: {
+      "Content-Type": mime,
+      "Accept-Ranges": "bytes",
+    },
+  });
 }
