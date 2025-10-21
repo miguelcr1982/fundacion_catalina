@@ -1,10 +1,11 @@
 import fs from "fs";
 import path from "path";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { file: string } },
-) {
+interface Params {
+  file: string;
+}
+
+export async function GET(request: Request, { params }: { params: Params }) {
   const { file } = params;
   const filePath = path.join(process.cwd(), "public/uploads", file);
 
