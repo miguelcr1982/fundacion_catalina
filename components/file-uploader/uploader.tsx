@@ -194,7 +194,7 @@ export const Uploader = ({
 
       if (fileSizeTooBig) {
         toast.error(
-          "El tamaño del archivo excede el límite, el máximo es 5 MB",
+          "El tamaño del archivo excede el límite, el máximo es 5 MB para imágenes y 250 MB para videos",
         );
       }
     }
@@ -242,7 +242,7 @@ export const Uploader = ({
       fileTypeAccepted === "video" ? { "video/*": [] } : { "image/*": [] },
     maxFiles: 1,
     multiple: false,
-    maxSize: fileTypeAccepted === "image" ? 5 * 1024 * 1024 : 50 * 1024 * 1024, // 5MB images, 50MB videos
+    maxSize: fileTypeAccepted === "image" ? 5 * 1024 * 1024 : 250 * 1024 * 1024, // 5MB images, 250MB videos
     onDropRejected: rejectedFiles,
     disabled:
       !!fileState.objectUrl || fileState.isDeleting || fileState.isUploading,
