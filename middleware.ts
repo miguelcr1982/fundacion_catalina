@@ -20,6 +20,7 @@ export default async function middleware(req: NextRequest) {
     "/admin",
     "/api/upload-local",
     "/api/delete-local",
+    "/api/uploads",
     // ... cualquier otra ruta de API que deba estar protegida
   ];
 
