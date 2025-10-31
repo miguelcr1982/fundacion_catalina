@@ -14,24 +14,25 @@ export async function GET(request: Request) {
 
   const fileBuffer = fs.readFileSync(filePath);
   const ext = path.extname(filePath).toLowerCase();
-  const mime =
-    ext === ".mp4"
-      ? "video/mp4"
-      : ext === ".webm"
-        ? "video/webm"
-        : ext === ".ogg"
-          ? "video/ogg"
-          : ext === ".jpg" || ext === ".jpeg"
-            ? "image/jpeg"
-            : ext === ".png"
-              ? "image/png"
-              : "application/octet-stream";
+  const mimeMap: Record<string, string> = {
+    ".mp4": "video/mp4",
+    ".webm": "video/webm",
+    ".ogg": "video/ogg",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp",
+  };
+
+  const mime = mimeMap[ext] || "application/octet-stream";
 
   return new Response(fileBuffer, {
     status: 200,
     headers: {
       "Content-Type": mime,
+      "Content-Length": fileBuffer.length.toString(),
       "Accept-Ranges": "bytes",
+      "Cache-Control": "public, max-age=31536000",
     },
   });
 }

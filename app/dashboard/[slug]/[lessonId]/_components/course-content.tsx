@@ -9,7 +9,10 @@ import { RenderDescription } from "@/components/rich-text-editor/render-descript
 import { Button } from "@/components/ui/button";
 import { tryCatch } from "@/hooks/try-catch";
 import { useConfetti } from "@/hooks/use-confetti";
-import { useConstructUrl } from "@/hooks/use-construct-url";
+import {
+  useConstructUrl,
+  useConstructUrlVideo,
+} from "@/hooks/use-construct-url";
 
 import { markLessonComplete } from "../actions";
 
@@ -28,7 +31,7 @@ export const CourseContent = ({ data }: CourseContentProps) => {
     thumbnailKey: string;
     videoKey: string;
   }) => {
-    const videoUrl = useConstructUrl(videoKey);
+    const videoUrl = useConstructUrlVideo(videoKey);
     const thumbnailUrl = useConstructUrl(thumbnailKey);
 
     if (!videoKey) {
