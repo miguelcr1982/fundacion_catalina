@@ -6,9 +6,12 @@ import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useConstructUrlVideo } from "@/hooks/use-construct-url";
 import { cn } from "@/lib/utils";
 
+import {
+  useConstructUrl,
+  useConstructUrlVideo,
+} from "@/hooks/use-construct-url";
 import {
   RenderEmptyState,
   RenderErrorState,
@@ -39,7 +42,13 @@ export const Uploader = ({
   value,
   fileTypeAccepted,
 }: UploaderProps) => {
-  const fileUrl = useConstructUrlVideo(value || "");
+  let fileUrl = "";
+
+  if (fileTypeAccepted === "video") {
+    fileUrl = useConstructUrlVideo(value || "");
+  } else {
+    fileUrl = useConstructUrl(value || "");
+  }
 
   const [fileState, setFileState] = useState<UploaderState>({
     error: false,
