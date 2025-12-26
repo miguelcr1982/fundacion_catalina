@@ -20,7 +20,7 @@ const NAVIGATION_ITEMS = [
     href: "/courses",
   },
   {
-    name: "Panel",
+    name: "Inicio",
     href: "/dashboard",
   },
 ];

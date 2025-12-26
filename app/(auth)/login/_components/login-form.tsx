@@ -2,7 +2,7 @@
 
 import { Loader2Icon, SendIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { KeyboardEvent, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -93,6 +93,14 @@ export function LoginForm() {
               placeholder=""
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (!emailSignInPending && user) {
+                    signInWithEmail();
+                  }
+                }
+              }}
               required
             />
           </div>

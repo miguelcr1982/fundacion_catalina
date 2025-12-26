@@ -5,8 +5,10 @@ import {
   IconDashboard,
   IconFileAi,
   IconFileDescription,
+  IconHome,
   IconListDetails,
   IconSettings,
+  IconUser,
 } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +32,11 @@ import { NavUser } from "./nav-user";
 const data = {
   navMain: [
     {
+      title: "Inicio",
+      url: "/dashboard",
+      icon: IconHome,
+    },
+    {
       title: "Panel",
       url: "/admin",
       icon: IconDashboard,
@@ -38,6 +45,11 @@ const data = {
       title: "Cursos",
       url: "/admin/courses",
       icon: IconListDetails,
+    },
+    {
+      title: "Usuarios",
+      url: "/admin/users",
+      icon: IconUser,
     },
     /* {
       title: "Analytics",

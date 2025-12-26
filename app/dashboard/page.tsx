@@ -35,14 +35,21 @@ const DashboardPage = async () => {
         />
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {enrolledCourses.map((course) => (
-            <Link
-              key={course.Course.id}
-              href={`/dashboard/${course.Course.slug}`}
-            >
-              {course.Course.title}
-            </Link>
-          ))}
+          <ul className="col-span-full space-y-2">
+            {enrolledCourses.map((course) => (
+              <li key={course.Course.id} className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-sm text-slate-700">
+                  {course.Course.title?.charAt(0).toUpperCase()}
+                </div>
+                <Link
+                  href={`/dashboard/${course.Course.slug}`}
+                  className="text-primary hover:underline"
+                >
+                  {course.Course.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
