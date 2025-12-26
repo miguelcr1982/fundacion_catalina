@@ -4,11 +4,11 @@ import { requireAdmin } from "@/app/data/admin/require-admin";
 import { prisma } from "@/lib/db";
 import EditUserForm from "./edit-form";
 
-type Props = { params: { id: string } };
+type Props = { params: { id: string } | Promise<{ id: string }> };
 
 export default async function EditUserPage({ params }: Props) {
   await requireAdmin();
-  const { id } = (await params) as { id: string };
+  const { id } = await params;
 
   const user = await prisma.user.findUnique({
     where: { id },

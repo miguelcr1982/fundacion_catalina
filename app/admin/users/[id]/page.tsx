@@ -11,7 +11,7 @@ type Props = {
 
 export default async function UserDetailPage({ params }: Props) {
   await requireAdmin();
-  const { id } = (await params) as { id: string };
+  const { id } = await params;
 
   const user = await prisma.user.findUnique({
     where: { id },
