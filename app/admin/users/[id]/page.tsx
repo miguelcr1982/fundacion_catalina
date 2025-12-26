@@ -5,13 +5,11 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { UserActions } from "./user-actions";
 
-type Props = {
-  params: { id: string };
-};
+type Props = { params: any };
 
 export default async function UserDetailPage({ params }: Props) {
   await requireAdmin();
-  const { id } = await params;
+  const { id } = (await params) as { id: string };
 
   const user = await prisma.user.findUnique({
     where: { id },

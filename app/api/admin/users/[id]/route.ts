@@ -2,10 +2,7 @@ import { requireAdmin } from "@/app/data/admin/require-admin";
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } },
-) {
+export async function PATCH(req: Request, { params }: any) {
   await requireAdmin();
 
   const id = params.id;
@@ -27,10 +24,7 @@ export async function PATCH(
   return NextResponse.json({ ok: true, user: updated });
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } },
-) {
+export async function DELETE(req: Request, { params }: any) {
   await requireAdmin();
 
   const id = params.id;

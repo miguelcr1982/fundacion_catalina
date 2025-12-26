@@ -4,11 +4,11 @@ import { requireAdmin } from "@/app/data/admin/require-admin";
 import { prisma } from "@/lib/db";
 import EditUserForm from "./edit-form";
 
-type Props = { params: { id: string } | Promise<{ id: string }> };
+type Props = { params: any };
 
 export default async function EditUserPage({ params }: Props) {
   await requireAdmin();
-  const { id } = await params;
+  const { id } = (await params) as { id: string };
 
   const user = await prisma.user.findUnique({
     where: { id },
@@ -28,7 +28,6 @@ export default async function EditUserPage({ params }: Props) {
   return (
     <div className="p-6">
       <h1 className="mb-4 text-2xl font-semibold">Editar usuario</h1>
-      {/* @ts-expect-error Async Server Component passing props to client */}
       <EditUserForm initialData={user} />
     </div>
   );
