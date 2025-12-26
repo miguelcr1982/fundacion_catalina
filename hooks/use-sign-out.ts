@@ -9,17 +9,28 @@ export function useSignOut() {
   const router = useRouter();
 
   const handleSignOut = async function signOut() {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          toast.success("Cerró sesión correctamente");
-          router.push("/login");
+    try {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success("Cerró sesión correctamente");
+            router.push("/");
+          },
+          onError: () => {
+            throw new Error("signout-failed");
+          },
         },
-        onError: () => {
-          toast.error("No se pudo cerrar sesión");
-        },
-      },
-    });
+      });
+    } catch (err) {
+      // fallback: clear session cookies server-side and redirect
+      try {
+        await fetch("/api/auth/clear-session", { method: "POST" });
+      } catch (e) {
+        // ignore
+      }
+      toast.success("Sesión cerrada");
+      router.push("/");
+    }
   };
 
   return handleSignOut;

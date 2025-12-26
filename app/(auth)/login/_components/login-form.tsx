@@ -50,19 +50,33 @@ export function LoginForm() {
   function signInWithEmail() {
     // ensureAdmin();
     startEmailSignInTransition(async () => {
-      await authClient.signIn.username({
-        username: user,
-        password,
-        fetchOptions: {
-          onSuccess: () => {
-            toast.success("Inicio de sesión exitoso");
-            router.push("/admin");
+      try {
+        await authClient.signIn.username({
+          username: user,
+          password,
+          fetchOptions: {
+            onSuccess: () => {
+              toast.success("Inicio de sesión exitoso");
+              router.push("/admin");
+            },
+            onError: (error) => {
+              throw error || new Error("sign-in-failed");
+            },
           },
-          onError: (error) => {
-            toast.error(error.error.message);
-          },
-        },
-      });
+        });
+      } catch (err) {
+        // If sign-in fails possibly due to corrupted/expired cookies, clear server-side and show error
+        try {
+          await fetch("/api/auth/clear-session", { method: "POST" });
+        } catch (e) {
+          // ignore
+        }
+        const msg =
+          (err as any)?.error?.message ||
+          (err as Error).message ||
+          "Error al iniciar sesión";
+        toast.error(msg);
+      }
     });
   }
 

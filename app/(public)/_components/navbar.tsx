@@ -71,11 +71,11 @@ export const Navbar = () => {
                   href="/login"
                   className={buttonVariants({ variant: "secondary" })}
                 >
-                  Login
+                  Ingresar
                 </Link>
-                <Link href="/login" className={buttonVariants()}>
+                {/* <Link href="/login" className={buttonVariants()}>
                   Empezar
-                </Link>
+                </Link> */}
               </>
             )}
           </div>
