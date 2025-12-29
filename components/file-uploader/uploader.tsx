@@ -143,8 +143,32 @@ export const Uploader = ({
         isDeleting: true,
       }));
 
+      // If there is no uploaded `key` (e.g. local blob preview), skip server delete.
+      if (!fileState.key) {
+        if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+          URL.revokeObjectURL(fileState.objectUrl);
+        }
+
+        onChange?.("");
+
+        setFileState(() => ({
+          file: null,
+          isUploading: false,
+          progress: 0,
+          objectUrl: undefined,
+          error: false,
+          fileType: fileTypeAccepted,
+          id: null,
+          isDeleting: false,
+        }));
+
+        toast.success("Archivo eliminado exitosamente");
+        return;
+      }
+
       const response = await fetch("/api/delete-local", {
         method: "DELETE",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ key: fileState.key }),
       });
@@ -153,7 +177,7 @@ export const Uploader = ({
         toast.error("No se pudo eliminar el archivo");
         setFileState((prev) => ({
           ...prev,
-          isDeleting: true,
+          isDeleting: false,
           error: true,
         }));
 
