@@ -21,7 +21,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
-import { env } from "@/lib/env";
 
 import { EnrollmentButton } from "./_components/enrollment-button";
 
@@ -35,7 +34,7 @@ const CourseSlugPage = async ({ params }: CourseSlugPageProps) => {
   const course = await getCourse(slug);
   const isEnrolled = await checkIfCourseBought(course.id);
 
-  const thumbnailUrl = `${env.NEXT_PUBLIC_API_URL}${course.fileKey}`;
+  const thumbnailUrl = course.fileKey;
 
   return (
     <div className="mt-5 grid grid-cols-1 gap-8 lg:grid-cols-3">
