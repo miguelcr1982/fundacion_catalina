@@ -75,7 +75,7 @@ export const AdminCourseCard = ({ data }: AdminCourseCardProps) => {
 
       <CardContent className="p-4">
         <Link
-          href={`/admin/courses/${data.id}`}
+          href={`/admin/courses/${data.id}/edit`}
           className="group-hover:text-primary line-clamp-2 text-lg font-medium transition-colors hover:underline"
         >
           {data.title}
