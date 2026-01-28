@@ -73,6 +73,7 @@ export const RenderUploadedState = ({
           alt="uploaded file preview"
           className="object-contain p-2"
           fill
+          unoptimized
         />
       ) : (
         <video src={previewUrl} className="size-full rounded-md" controls />

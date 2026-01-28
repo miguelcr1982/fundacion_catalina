@@ -20,13 +20,16 @@ export default async function proxy(req: NextRequest) {
     "/admin",
     "/api/upload-local",
     "/api/delete-local",
-    "/api/uploads",
     // ... cualquier otra ruta de API que deba estar protegida
   ];
 
-  const shouldProtect = protectedPaths.some((p) =>
-    req.nextUrl.pathname.startsWith(p),
-  );
+  // No proteger descarga de archivos públicos (GET /api/uploads/*)
+  const isPublicUploadGet =
+    req.method === "GET" && req.nextUrl.pathname.startsWith("/api/uploads");
+
+  const shouldProtect =
+    !isPublicUploadGet &&
+    protectedPaths.some((p) => req.nextUrl.pathname.startsWith(p));
 
   if (shouldProtect) {
     return authMiddleware(req);
