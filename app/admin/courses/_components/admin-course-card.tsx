@@ -21,14 +21,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useConstructUrl } from "@/hooks/use-construct-url";
+import { useConstructUrlMedia } from "@/hooks/use-construct-url";
 
 interface AdminCourseCardProps {
   data: AdminGetCourses;
 }
 
 export const AdminCourseCard = ({ data }: AdminCourseCardProps) => {
-  const thumbnailUrl = useConstructUrl(data.fileKey);
+  const thumbnailUrl = useConstructUrlMedia(data.fileKey);
 
   return (
     <Card className="group relative gap-0 py-0">

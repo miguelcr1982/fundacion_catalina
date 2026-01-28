@@ -8,10 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-import {
-  useConstructUrl,
-  useConstructUrlVideo,
-} from "@/hooks/use-construct-url";
+import { useConstructUrlMedia } from "@/hooks/use-construct-url";
 import {
   RenderEmptyState,
   RenderErrorState,
@@ -44,11 +41,7 @@ export const Uploader = ({
 }: UploaderProps) => {
   let fileUrl = "";
 
-  if (fileTypeAccepted === "video") {
-    fileUrl = useConstructUrlVideo(value || "");
-  } else {
-    fileUrl = useConstructUrl(value || "");
-  }
+  fileUrl = useConstructUrlMedia(value || "");
 
   const [fileState, setFileState] = useState<UploaderState>({
     error: false,

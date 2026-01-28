@@ -7,14 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useConstructUrl } from "@/hooks/use-construct-url";
+import { useConstructUrlMedia } from "@/hooks/use-construct-url";
 
 interface PublicCourseCardProps {
   data: GetAllCourses[number];
 }
 
 export const PublicCourseCard = ({ data }: PublicCourseCardProps) => {
-  const thumbnailUrl = useConstructUrl(data.fileKey);
+  const thumbnailUrl = useConstructUrlMedia(data.fileKey);
 
   return (
     <Card className="group relative gap-0 py-0">
