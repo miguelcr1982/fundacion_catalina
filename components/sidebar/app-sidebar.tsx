@@ -8,6 +8,7 @@ import {
   IconHome,
   IconListDetails,
   IconSettings,
+  IconTags,
   IconUser,
 } from "@tabler/icons-react";
 import Image from "next/image";
@@ -45,6 +46,11 @@ const data = {
       title: "Cursos",
       url: "/admin/courses",
       icon: IconListDetails,
+    },
+    {
+      title: "Categorías",
+      url: "/admin/categories",
+      icon: IconTags,
     },
     {
       title: "Usuarios",

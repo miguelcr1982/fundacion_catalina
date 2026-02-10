@@ -40,7 +40,7 @@ export const CourseSidebar = ({ course }: CourseSidebarProps) => {
               {course.title}
             </h1>
             <p className="text-muted-foreground mt-1 truncate text-xs">
-              {course.category}
+              {course.category.name}
             </p>
           </div>
         </div>

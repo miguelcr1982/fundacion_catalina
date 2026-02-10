@@ -15,7 +15,12 @@ export async function getAllCourses() {
       slug: true,
       level: true,
       duration: true,
-      category: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",

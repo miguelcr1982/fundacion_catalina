@@ -68,7 +68,7 @@ const CourseSlugPage = async ({ params }: CourseSlugPageProps) => {
             </Badge>
             <Badge>
               <IconCategory className="size-4" />
-              <span>{course.category}</span>
+              <span>{course.category.name}</span>
             </Badge>
             <Badge>
               <IconClock className="size-4" />
@@ -210,7 +210,7 @@ const CourseSlugPage = async ({ params }: CourseSlugPageProps) => {
                     <div>
                       <p className="text-sm font-medium">Categoría</p>
                       <p className="text-muted-foreground text-sm">
-                        {course.category}
+                        {course.category.name}
                       </p>
                     </div>
                   </div>

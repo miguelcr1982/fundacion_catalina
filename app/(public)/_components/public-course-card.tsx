@@ -47,7 +47,9 @@ export const PublicCourseCard = ({ data }: PublicCourseCardProps) => {
           </div>
           <div className="flex items-center gap-x-2">
             <SchoolIcon className="text-primary bg-primary/10 size-6 rounded-md p-1" />
-            <p className="text-muted-foreground text-sm">{data.category}</p>
+            <p className="text-muted-foreground text-sm">
+              {data.category.name}
+            </p>
           </div>
         </div>
 

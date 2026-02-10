@@ -18,7 +18,12 @@ export async function getCourseSidebarData(slug: string) {
       fileKey: true,
       duration: true,
       level: true,
-      category: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       slug: true,
       chapter: {
         select: {

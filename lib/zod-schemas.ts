@@ -37,7 +37,7 @@ export const courseSchema = z.object({
     .min(1, { message: "La duración debe ser al menos de 1 hora" })
     .max(10, { message: "La duración no puede exceder 10 horas" }),
   level: z.enum(courseLevels, { message: "Nivel es requerido" }),
-  category: z.enum(courseCategories, { message: "Categoría es requerida" }),
+  categoryId: z.string().min(1, { message: "Categoría es requerida" }),
   smallDescription: z
     .string()
     .min(3, { message: "El resumen debe tener al menos 3 caracteres" })

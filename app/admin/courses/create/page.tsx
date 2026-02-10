@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
 import { toast } from "sonner";
@@ -44,7 +44,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { tryCatch } from "@/hooks/try-catch";
 import { useConfetti } from "@/hooks/use-confetti";
 import {
-  courseCategories,
   courseLevels,
   courseSchema,
   CourseSchemaType,
@@ -53,10 +52,34 @@ import {
 
 import { CreateCourse } from "./actions";
 
+interface Category {
+  id: string;
+  name: string;
+}
+
 const AdminCoursesCreatePage = () => {
   const [isPending, startTransition] = useTransition();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const router = useRouter();
   const { triggerConfetti } = useConfetti();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categories");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        toast.error("Error al cargar las categorías");
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const form = useForm<CourseSchemaType>({
     resolver: zodResolver(courseSchema),
@@ -66,7 +89,7 @@ const AdminCoursesCreatePage = () => {
       fileKey: "",
       duration: 0,
       level: "Principiante",
-      category: "Educación y Comunidad",
+      categoryId: "",
       status: "Borrador",
       slug: "",
       smallDescription: "",
@@ -212,23 +235,30 @@ const AdminCoursesCreatePage = () => {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="category"
+                  name="categoryId"
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormLabel>Categoría</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        disabled={isLoadingCategories}
                       >
                         <FormControl>
                           <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select Category" />
+                            <SelectValue
+                              placeholder={
+                                isLoadingCategories
+                                  ? "Cargando categorías..."
+                                  : "Selecciona una categoría"
+                              }
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {courseCategories.map((category) => (
-                            <SelectItem key={category} value={category}>
-                              {category}
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
                             </SelectItem>
                           ))}
                         </SelectContent>

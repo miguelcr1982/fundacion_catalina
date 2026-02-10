@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon, PlusIcon, SparklesIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
 import { toast } from "sonner";
@@ -31,7 +31,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { tryCatch } from "@/hooks/try-catch";
 import {
-  courseCategories,
   courseLevels,
   courseSchema,
   CourseSchemaType,
@@ -40,13 +39,37 @@ import {
 
 import { EditCourse } from "../actions";
 
+interface Category {
+  id: string;
+  name: string;
+}
+
 interface EditCourseForm {
   data: AdminGetCourse;
 }
 
 export const EditCourseForm = ({ data }: EditCourseForm) => {
   const [isPending, startTransition] = useTransition();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categories");
+        const categoryData = await response.json();
+        setCategories(categoryData);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        toast.error("Error al cargar las categorías");
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const form = useForm<CourseSchemaType>({
     resolver: zodResolver(courseSchema),
@@ -56,7 +79,7 @@ export const EditCourseForm = ({ data }: EditCourseForm) => {
       fileKey: data.fileKey,
       duration: data.duration,
       level: data.level,
-      category: data.category as CourseSchemaType["category"],
+      categoryId: data.category.id,
       status: data.status,
       slug: data.slug,
       smallDescription: data.smallDescription,
@@ -183,23 +206,30 @@ export const EditCourseForm = ({ data }: EditCourseForm) => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
-            name="category"
+            name="categoryId"
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormLabel>Categoría</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  disabled={isLoadingCategories}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Seleccione Categoría" />
+                      <SelectValue
+                        placeholder={
+                          isLoadingCategories
+                            ? "Cargando categorías..."
+                            : "Selecciona una categoría"
+                        }
+                      />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {courseCategories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
