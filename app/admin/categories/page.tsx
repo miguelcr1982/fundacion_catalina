@@ -292,9 +292,9 @@ export default function CategoriesPage() {
                             size="sm"
                             variant="ghost"
                             className="text-destructive"
-                            disabled={
-                              category.courseCount && category.courseCount > 0
-                            }
+                            disabled={Boolean(
+                              category.courseCount && category.courseCount > 0,
+                            )}
                             title={
                               category.courseCount && category.courseCount > 0
                                 ? "No se puede eliminar una categoría con cursos asociados"

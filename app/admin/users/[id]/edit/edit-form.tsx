@@ -1,5 +1,17 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -21,6 +33,9 @@ export default function EditUserForm({ initialData }: { initialData: Data }) {
   const [banned, setBanned] = useState(Boolean(initialData.banned));
   const [banReason, setBanReason] = useState(initialData.banReason || "");
   const [loading, setLoading] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordLoading, setPasswordLoading] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -42,77 +57,144 @@ export default function EditUserForm({ initialData }: { initialData: Data }) {
     }
   }
 
+  async function handlePasswordChange() {
+    if (!newPassword.trim()) {
+      toast.error("La contrasena es requerida");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("Las contrasenas no coinciden");
+      return;
+    }
+
+    setPasswordLoading(true);
+    try {
+      const res = await fetch("/api/auth/admin/set-user-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: initialData.id,
+          newPassword,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.message || "Error actualizando contrasena");
+      }
+
+      toast.success("Contrasena actualizada");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      toast.error((err as Error).message || "Error");
+    } finally {
+      setPasswordLoading(false);
+    }
+  }
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-xl rounded-md border bg-white p-6 dark:border-slate-700 dark:bg-slate-800"
-    >
-      <div className="grid grid-cols-1 gap-4">
-        <label className="flex flex-col">
-          <span className="text-sm text-slate-500">Nombre</span>
-          <input
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="space-y-2">
+          <Label htmlFor="user-name">Nombre</Label>
+          <Input
+            id="user-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="input"
           />
-        </label>
+        </div>
 
-        <label className="flex flex-col">
-          <span className="text-sm text-slate-500">Email</span>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="user-email">Email</Label>
+          <Input
+            id="user-email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="input"
           />
-        </label>
+        </div>
 
-        <label className="flex flex-col">
-          <span className="text-sm text-slate-500">Rol</span>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="input"
-          >
-            <option value="user">user</option>
-            <option value="admin">admin</option>
-          </select>
-        </label>
+        <div className="space-y-2">
+          <Label htmlFor="user-role">Rol</Label>
+          <Select value={role} onValueChange={setRole}>
+            <SelectTrigger id="user-role">
+              <SelectValue placeholder="Selecciona un rol" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="user">user</SelectItem>
+              <SelectItem value="admin">admin</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-        <label className="flex items-center gap-3">
-          <input
-            type="checkbox"
+        <div className="flex items-center gap-3">
+          <Checkbox
+            id="user-banned"
             checked={banned}
-            onChange={(e) => setBanned(e.target.checked)}
+            onCheckedChange={(value) => setBanned(Boolean(value))}
           />
-          <span className="text-sm">Baneado</span>
-        </label>
+          <Label htmlFor="user-banned">Baneado</Label>
+        </div>
 
         {banned && (
-          <label className="flex flex-col">
-            <span className="text-sm text-slate-500">Razón del baneo</span>
-            <input
+          <div className="space-y-2 md:col-span-2 lg:col-span-3">
+            <Label htmlFor="ban-reason">Razon del baneo</Label>
+            <Input
+              id="ban-reason"
               value={banReason}
               onChange={(e) => setBanReason(e.target.value)}
-              className="input"
             />
-          </label>
+          </div>
         )}
 
-        <div className="flex gap-3">
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-primary rounded-md px-4 py-2 text-white"
-          >
+        <div className="flex flex-wrap gap-3 md:col-span-2 lg:col-span-3">
+          <Button type="submit" disabled={loading}>
             {loading ? "Guardando..." : "Guardar"}
-          </button>
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="rounded-md border px-4 py-2"
-          >
+          </Button>
+          <Button type="button" variant="outline" onClick={() => router.back()}>
             Cancelar
-          </button>
+          </Button>
+        </div>
+      </div>
+
+      <Separator />
+
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-sm font-medium">Cambiar contrasena</h3>
+          <p className="text-muted-foreground text-xs">
+            Reemplaza la contrasena del usuario con una nueva.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-2">
+            <Label htmlFor="new-password">Nueva contrasena</Label>
+            <Input
+              id="new-password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="confirm-password">Confirmar contrasena</Label>
+            <Input
+              id="confirm-password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            onClick={handlePasswordChange}
+            disabled={passwordLoading}
+          >
+            {passwordLoading ? "Actualizando..." : "Actualizar contrasena"}
+          </Button>
         </div>
       </div>
     </form>
