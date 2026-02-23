@@ -20,6 +20,10 @@ interface CourseSidebarProps {
 }
 
 export const CourseSidebar = ({ course }: CourseSidebarProps) => {
+  if (!course) {
+    return null;
+  }
+
   const pathname = usePathname();
   const currentLessonId = pathname.split("/").pop();
   const { completedLessons, progressPercentage, totalLessons } =

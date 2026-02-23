@@ -59,6 +59,11 @@ export const CourseContent = ({ data }: CourseContentProps) => {
   };
 
   const onSubmit = () => {
+    if (!data) {
+      toast.error("No hay datos disponibles");
+      return;
+    }
+
     startTransition(async () => {
       const { data: result, error } = await tryCatch(
         markLessonComplete(data.id, data.chapter.course.slug),
@@ -77,6 +82,10 @@ export const CourseContent = ({ data }: CourseContentProps) => {
       }
     });
   };
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <div className="bg-background flex h-full flex-col pl-6">

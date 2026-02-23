@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { CourseSidebarData } from "@/app/data/course/get-course-sidebar-data";
 
 interface UseCourseProgressProps {
-  courseData: CourseSidebarData;
+  courseData?: CourseSidebarData;
 }
 
 interface CourseProgressResult {
@@ -18,6 +18,14 @@ export function useCourseProgress({
   courseData,
 }: UseCourseProgressProps): CourseProgressResult {
   return useMemo(() => {
+    if (!courseData) {
+      return {
+        totalLessons: 0,
+        completedLessons: 0,
+        progressPercentage: 0,
+      };
+    }
+
     let totalLessons = 0;
     let completedLessons = 0;
 
