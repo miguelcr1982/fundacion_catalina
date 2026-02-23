@@ -124,6 +124,7 @@ model Course {
   status           CourseStatus @default(Borrador)
   chapter          Chapter[]
   enrollment       Enrollment[]
+  isPublic         Boolean      @default(false)
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

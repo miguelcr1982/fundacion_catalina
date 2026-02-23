@@ -46,6 +46,7 @@ export const courseSchema = z.object({
     .string()
     .min(3, { message: "El nombre debe tener al menos 3 caracteres" }),
   status: z.enum(courseStatus, { message: "Debe indicar un estado" }),
+  isPublic: z.boolean(),
 });
 
 export const chapterSchema = z.object({

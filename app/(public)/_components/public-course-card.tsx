@@ -19,6 +19,12 @@ export const PublicCourseCard = ({ data }: PublicCourseCardProps) => {
   return (
     <Card className="group relative gap-0 py-0">
       <Badge className="absolute top-2 right-2 z-10">{data.level}</Badge>
+      <Badge
+        variant={data.isPublic ? "default" : "secondary"}
+        className="absolute top-2 left-2 z-10"
+      >
+        {data.isPublic ? "🔓 Público" : "🔒 Privado"}
+      </Badge>
 
       <Image
         src={thumbnailUrl}

@@ -34,6 +34,10 @@ const CourseSlugPage = async ({ params }: CourseSlugPageProps) => {
   const course = await getCourse(slug);
   const isEnrolled = await checkIfCourseBought(course.id);
 
+  /* if (!course.isPublic && !isEnrolled) {
+    redirect("/login");
+  } */
+
   const thumbnailUrl = course.fileKey;
 
   return (
@@ -231,10 +235,9 @@ const CourseSlugPage = async ({ params }: CourseSlugPageProps) => {
                   </div>
                 </div>
               </div>
-
-              {isEnrolled ? (
+              {isEnrolled || course.isPublic ? (
                 <Link
-                  href="/dashboard"
+                  href={`/dashboard/${course.slug}`}
                   className={buttonVariants({ className: "w-full" })}
                 >
                   Ver curso

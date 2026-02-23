@@ -14,6 +14,7 @@ export async function getAllCourses() {
       id: true,
       slug: true,
       level: true,
+      isPublic: true,
       duration: true,
       category: {
         select: {

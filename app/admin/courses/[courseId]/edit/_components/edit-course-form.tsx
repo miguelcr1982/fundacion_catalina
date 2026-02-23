@@ -37,6 +37,7 @@ import {
   courseStatus,
 } from "@/lib/zod-schemas";
 
+import { Switch } from "@/components/ui/switch";
 import { EditCourse } from "../actions";
 
 interface Category {
@@ -82,6 +83,7 @@ export const EditCourseForm = ({ data }: EditCourseForm) => {
       categoryId: data.category.id,
       status: data.status,
       slug: data.slug,
+      isPublic: data.isPublic ?? false,
       smallDescription: data.smallDescription,
     },
   });
@@ -305,6 +307,27 @@ export const EditCourseForm = ({ data }: EditCourseForm) => {
                   </SelectContent>
                 </Select>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="isPublic"
+            render={({ field }) => (
+              <FormItem className="flex items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel>Hacer público</FormLabel>
+                  <p className="text-muted-foreground text-sm">
+                    Los usuarios sin registrarse podrán ver este curso
+                  </p>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
               </FormItem>
             )}
           />

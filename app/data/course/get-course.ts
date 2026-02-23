@@ -16,6 +16,7 @@ export async function getCourse(slug: string) {
       fileKey: true,
       id: true,
       slug: true,
+      isPublic: true,
       level: true,
       duration: true,
       category: {
