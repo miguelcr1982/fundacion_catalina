@@ -49,7 +49,7 @@ export const AdminCourseCard = ({ data }: AdminCourseCardProps) => {
             <DropdownMenuItem asChild>
               <Link href={`/courses/${data.slug}`}>
                 <EyeIcon className="mr-2 size-4" />
-                Preview
+                Visualizar
               </Link>
             </DropdownMenuItem>
 
@@ -58,7 +58,7 @@ export const AdminCourseCard = ({ data }: AdminCourseCardProps) => {
             <DropdownMenuItem asChild>
               <Link href={`/admin/courses/${data.id}/delete`}>
                 <Trash2Icon className="text-destructive mr-2 size-4" />
-                Delete Course
+                Borrar Curso
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>

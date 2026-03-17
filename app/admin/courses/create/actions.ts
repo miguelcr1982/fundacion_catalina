@@ -5,6 +5,8 @@ import { prisma } from "@/lib/db";
 import { ApiResponse } from "@/lib/types";
 import { courseSchema, CourseSchemaType } from "@/lib/zod-schemas";
 
+const DEFAULT_COURSE_IMAGE = "/course-placeholder.svg";
+
 export async function CreateCourse(
   data: CourseSchemaType,
 ): Promise<ApiResponse> {
@@ -23,6 +25,8 @@ export async function CreateCourse(
     await prisma.course.create({
       data: {
         ...validation.data,
+        fileKey: validation.data.fileKey || DEFAULT_COURSE_IMAGE,
+        isPublic: validation.data.isPublic ?? false,
         userId: session.user.id,
       },
     });

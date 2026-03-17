@@ -21,6 +21,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
+import { useConstructUrlMedia } from "@/hooks/use-construct-url";
 
 import { EnrollmentButton } from "./_components/enrollment-button";
 
@@ -38,7 +39,7 @@ const CourseSlugPage = async ({ params }: CourseSlugPageProps) => {
     redirect("/login");
   } */
 
-  const thumbnailUrl = course.fileKey;
+  const thumbnailUrl = useConstructUrlMedia(course.fileKey);
 
   return (
     <div className="mt-5 grid grid-cols-1 gap-8 lg:grid-cols-3">

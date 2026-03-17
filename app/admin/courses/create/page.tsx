@@ -40,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { tryCatch } from "@/hooks/try-catch";
 import { useConfetti } from "@/hooks/use-confetti";
@@ -93,6 +94,7 @@ const AdminCoursesCreatePage = () => {
       status: "Borrador",
       slug: "",
       smallDescription: "",
+      isPublic: false,
     },
   });
 
@@ -219,7 +221,7 @@ const AdminCoursesCreatePage = () => {
                 name="fileKey"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Imagen en miniatura</FormLabel>
+                    <FormLabel>Imagen en miniatura (opcional)</FormLabel>
                     <FormControl>
                       <Uploader
                         onChange={field.onChange}
@@ -338,6 +340,27 @@ const AdminCoursesCreatePage = () => {
                         </SelectContent>
                       </Select>
                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="isPublic"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-between rounded-lg border p-4">
+                      <div className="space-y-0.5">
+                        <FormLabel>Hacer público</FormLabel>
+                        <p className="text-muted-foreground text-sm">
+                          Los usuarios sin registrarse podrán ver este curso
+                        </p>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
                     </FormItem>
                   )}
                 />

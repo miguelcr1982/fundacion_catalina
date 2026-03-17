@@ -31,7 +31,7 @@ export const courseSchema = z.object({
   description: z
     .string()
     .min(3, { message: "La descripción debe tener al menos 3 caracteres" }),
-  fileKey: z.string().min(1, { message: "File is required" }),
+  fileKey: z.string().optional(),
   duration: z.coerce
     .number()
     .min(1, { message: "La duración debe ser al menos de 1 hora" })
@@ -46,7 +46,7 @@ export const courseSchema = z.object({
     .string()
     .min(3, { message: "El nombre debe tener al menos 3 caracteres" }),
   status: z.enum(courseStatus, { message: "Debe indicar un estado" }),
-  isPublic: z.boolean(),
+  isPublic: z.boolean().optional(),
 });
 
 export const chapterSchema = z.object({

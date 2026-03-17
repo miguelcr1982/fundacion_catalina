@@ -48,15 +48,17 @@ const CourseIdDeletePage = ({}: CourseIdDeletePageProps) => {
     <div className="mx-auto w-full max-w-xl">
       <Card className="mt-32">
         <CardHeader>
-          <CardTitle>Are you sure you want to delete this course?</CardTitle>
-          <CardDescription>This action cannot be undone.</CardDescription>
+          <CardTitle>
+            Estás seguro de que quieres eliminar este curso?
+          </CardTitle>
+          <CardDescription>Esta acción no se puede deshacer.</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-between">
           <Link
             href="/admin/courses"
             className={buttonVariants({ variant: "outline" })}
           >
-            Cancel
+            Cancelar
           </Link>
 
           <Button variant="destructive" onClick={onSubmit} disabled={pending}>
