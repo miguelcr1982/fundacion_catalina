@@ -6,9 +6,9 @@ RUN apk --no-cache --update add tzdata \
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 
-RUN pnpm install --frozen-lockfile --prod=false
+RUN pnpm install
 
 COPY . .
 
